@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gym Routine Tracker</title>
+    <title>Rutina de Gimnasio</title>
     <style>
         * {
             margin: 0;
@@ -514,19 +514,19 @@
                     <path d="M2 17l10 5 10-5"/>
                     <path d="M2 12l10 5 10-5"/>
                 </svg>
-                Gym Routine
+                Rutina de Gimnasio
             </h1>
-            <p>Track your daily workouts</p>
+            <p>Rastrea tus entrenamientos diarios</p>
         </div>
 
         <div class="day-selector">
             <div class="day-dropdown">
                 <select class="day-select" id="daySelect" onchange="switchDay(this.value)">
-                    <option value="monday">Monday</option>
-                    <option value="tuesday">Tuesday</option>
-                    <option value="wednesday">Wednesday</option>
-                    <option value="thursday">Thursday</option>
-                    <option value="friday">Friday</option>
+                    <option value="monday">Lunes</option>
+                    <option value="tuesday">Martes</option>
+                    <option value="wednesday">Miércoles</option>
+                    <option value="thursday">Jueves</option>
+                    <option value="friday">Viernes</option>
                 </select>
             </div>
         </div>
@@ -540,7 +540,7 @@
                         <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
                         <path d="M3 21v-5h5"/>
                     </svg>
-                    Reset Day
+                    Reiniciar Día
                 </button>
                 <button class="btn-reset-all" onclick="resetAllDays()">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -550,12 +550,12 @@
                         <line x1="10" y1="11" x2="10" y2="17"/>
                         <line x1="14" y1="11" x2="14" y2="17"/>
                     </svg>
-                    Reset All
+                    Reiniciar Todo
                 </button>
             </div>
-            <h2 class="day-title">Monday Workout</h2>
+            <h2 class="day-title">Entrenamiento Lunes</h2>
             <div class="exercises-container"></div>
-            <button class="add-exercise" onclick="showAddExerciseForm('monday')">+ Add Exercise</button>
+            <button class="add-exercise" onclick="showAddExerciseForm('monday')">+ Agregar Ejercicio</button>
         </div>
 
         <div id="tuesday" class="workout-day">
@@ -567,7 +567,7 @@
                         <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
                         <path d="M3 21v-5h5"/>
                     </svg>
-                    Reset Day
+                    Reiniciar Día
                 </button>
                 <button class="btn-reset-all" onclick="resetAllDays()">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -577,12 +577,12 @@
                         <line x1="10" y1="11" x2="10" y2="17"/>
                         <line x1="14" y1="11" x2="14" y2="17"/>
                     </svg>
-                    Reset All
+                    Reiniciar Todo
                 </button>
             </div>
-            <h2 class="day-title">Tuesday Workout</h2>
+            <h2 class="day-title">Entrenamiento Martes</h2>
             <div class="exercises-container"></div>
-            <button class="add-exercise" onclick="showAddExerciseForm('tuesday')">+ Add Exercise</button>
+            <button class="add-exercise" onclick="showAddExerciseForm('tuesday')">+ Agregar Ejercicio</button>
         </div>
 
         <div id="wednesday" class="workout-day">
@@ -594,7 +594,7 @@
                         <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
                         <path d="M3 21v-5h5"/>
                     </svg>
-                    Reset Day
+                    Reiniciar Día
                 </button>
                 <button class="btn-reset-all" onclick="resetAllDays()">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -604,12 +604,12 @@
                         <line x1="10" y1="11" x2="10" y2="17"/>
                         <line x1="14" y1="11" x2="14" y2="17"/>
                     </svg>
-                    Reset All
+                    Reiniciar Todo
                 </button>
             </div>
-            <h2 class="day-title">Wednesday Workout</h2>
+            <h2 class="day-title">Entrenamiento Miércoles</h2>
             <div class="exercises-container"></div>
-            <button class="add-exercise" onclick="showAddExerciseForm('wednesday')">+ Add Exercise</button>
+            <button class="add-exercise" onclick="showAddExerciseForm('wednesday')">+ Agregar Ejercicio</button>
         </div>
 
         <div id="thursday" class="workout-day">
@@ -621,7 +621,7 @@
                         <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
                         <path d="M3 21v-5h5"/>
                     </svg>
-                    Reset Day
+                    Reiniciar Día
                 </button>
                 <button class="btn-reset-all" onclick="resetAllDays()">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -631,12 +631,12 @@
                         <line x1="10" y1="11" x2="10" y2="17"/>
                         <line x1="14" y1="11" x2="14" y2="17"/>
                     </svg>
-                    Reset All
+                    Reiniciar Todo
                 </button>
             </div>
-            <h2 class="day-title">Thursday Workout</h2>
+            <h2 class="day-title">Entrenamiento Jueves</h2>
             <div class="exercises-container"></div>
-            <button class="add-exercise" onclick="showAddExerciseForm('thursday')">+ Add Exercise</button>
+            <button class="add-exercise" onclick="showAddExerciseForm('thursday')">+ Agregar Ejercicio</button>
         </div>
 
         <div id="friday" class="workout-day">
@@ -648,7 +648,7 @@
                         <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
                         <path d="M3 21v-5h5"/>
                     </svg>
-                    Reset Day
+                    Reiniciar Día
                 </button>
                 <button class="btn-reset-all" onclick="resetAllDays()">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -658,12 +658,12 @@
                         <line x1="10" y1="11" x2="10" y2="17"/>
                         <line x1="14" y1="11" x2="14" y2="17"/>
                     </svg>
-                    Reset All
+                    Reiniciar Todo
                 </button>
             </div>
-            <h2 class="day-title">Friday Workout</h2>
+            <h2 class="day-title">Entrenamiento Viernes</h2>
             <div class="exercises-container"></div>
-            <button class="add-exercise" onclick="showAddExerciseForm('friday')">+ Add Exercise</button>
+            <button class="add-exercise" onclick="showAddExerciseForm('friday')">+ Agregar Ejercicio</button>
         </div>
     </div>
 
@@ -673,7 +673,7 @@
             monday: [
                 {
                     id: 1,
-                    name: "Bench Press",
+                    name: "Press de Banca",
                     image: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="9" y1="12" x2="15" y2="12"/>
                         <line x1="9" y1="9" x2="9" y2="15"/>
@@ -689,7 +689,7 @@
                 },
                 {
                     id: 2,
-                    name: "Squats",
+                    name: "Sentadillas",
                     image: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 2L2 7l10 5 10-5-10-5z"/>
                         <path d="M2 17l10 5 10-5"/>
@@ -703,7 +703,7 @@
             tuesday: [
                 {
                     id: 1,
-                    name: "Pull-ups",
+                    name: "Dominadas",
                     image: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M3 12h18"/>
                         <path d="M12 3v18"/>
@@ -788,8 +788,8 @@
                         <div class="set-checkbox ${isSetCompleted ? 'checked' : ''}" 
                              onclick="toggleSet(${exercise.id}, ${setNumber}, '${day}')"></div>
                         <div class="set-info">
-                            <span class="set-number">Set ${setNumber}</span>
-                            <span class="set-reps">${exercise.reps} reps</span>
+                            <span class="set-number">Serie ${setNumber}</span>
+                            <span class="set-reps">${exercise.reps} rep</span>
                         </div>
                     </div>
                 `;
@@ -802,16 +802,16 @@
                     <div class="exercise-image">${exercise.image}</div>
                     <div class="exercise-info">
                         <h3>${exercise.name}</h3>
-                        <p>${exercise.sets} sets × ${exercise.reps} reps</p>
+                        <p>${exercise.sets} series × ${exercise.reps} rep</p>
                     </div>
                     <div class="exercise-controls">
-                        <button class="control-btn edit-btn" onclick="event.stopPropagation(); editExercise(${exercise.id}, '${day}')" title="Edit Exercise">
+                        <button class="control-btn edit-btn" onclick="event.stopPropagation(); editExercise(${exercise.id}, '${day}')" title="Editar Ejercicio">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                                 <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                             </svg>
                         </button>
-                        <button class="control-btn delete-btn" onclick="event.stopPropagation(); deleteExercise(${exercise.id}, '${day}')" title="Delete Exercise">
+                        <button class="control-btn delete-btn" onclick="event.stopPropagation(); deleteExercise(${exercise.id}, '${day}')" title="Eliminar Ejercicio">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M3 6h18"/>
                                 <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
@@ -877,29 +877,29 @@
             form.className = 'exercise-form active';
             form.innerHTML = `
                 <div class="form-group">
-                    <label>Exercise Name</label>
-                    <input type="text" id="exerciseName" placeholder="e.g., Bench Press">
+                    <label>Nombre del Ejercicio</label>
+                    <input type="text" id="exerciseName" placeholder="ej., Press de Banca">
                 </div>
                 <div class="form-group">
-                    <label>Exercise Type</label>
+                    <label>Tipo de Ejercicio</label>
                     <select id="exerciseImage">
-                        <option value="">Select Exercise Type</option>
-                        <option value="strength">Strength</option>
+                        <option value="">Seleccionar Tipo de Ejercicio</option>
+                        <option value="strength">Fuerza</option>
                         <option value="cardio">Cardio</option>
-                        <option value="flexibility">Flexibility</option>
+                        <option value="flexibility">Flexibilidad</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Number of Sets</label>
+                    <label>Número de Series</label>
                     <input type="number" id="exerciseSets" placeholder="4" min="1" max="10">
                 </div>
                 <div class="form-group">
-                    <label>Reps</label>
+                    <label>Repeticiones</label>
                     <input type="text" id="exerciseReps" placeholder="8-10">
                 </div>
                 <div class="form-actions">
-                    <button class="btn btn-primary" onclick="addExercise('${day}')">Add Exercise</button>
-                    <button class="btn btn-secondary" onclick="hideAddExerciseForm('${day}')">Cancel</button>
+                    <button class="btn btn-primary" onclick="addExercise('${day}')">Agregar Ejercicio</button>
+                    <button class="btn btn-secondary" onclick="hideAddExerciseForm('${day}')">Cancelar</button>
                 </div>
             `;
 
@@ -923,7 +923,7 @@
             const reps = document.getElementById('exerciseReps').value.trim();
 
             if (!name || !imageType || !sets || !reps) {
-                alert('Please fill in all fields');
+                alert('Por favor completa todos los campos');
                 return;
             }
 
@@ -965,7 +965,7 @@
 
         // Reset a specific day
         function resetDay(day) {
-            if (confirm(`Are you sure you want to reset all progress for ${day}?`)) {
+            if (confirm(`¿Estás seguro de que quieres reiniciar todo el progreso para ${day}?`)) {
                 workouts[day].forEach(exercise => {
                     exercise.completedSets = [];
                     exercise.completed = false;
@@ -978,7 +978,7 @@
 
         // Reset all days
         function resetAllDays() {
-            if (confirm('Are you sure you want to reset ALL workout progress? This cannot be undone.')) {
+            if (confirm('¿Estás seguro de que quieres reiniciar TODO el progreso de entrenamiento? Esto no se puede deshacer.')) {
                 Object.keys(workouts).forEach(day => {
                     workouts[day].forEach(exercise => {
                         exercise.completedSets = [];
@@ -1007,29 +1007,29 @@
             form.dataset.exerciseId = exerciseId;
             form.innerHTML = `
                 <div class="form-group">
-                    <label>Exercise Name</label>
-                    <input type="text" id="editExerciseName" value="${exercise.name}" placeholder="e.g., Bench Press">
+                    <label>Nombre del Ejercicio</label>
+                    <input type="text" id="editExerciseName" value="${exercise.name}" placeholder="ej., Press de Banca">
                 </div>
                 <div class="form-group">
-                    <label>Exercise Type</label>
+                    <label>Tipo de Ejercicio</label>
                     <select id="editExerciseImage">
-                        <option value="">Select Exercise Type</option>
-                        <option value="strength">Strength</option>
+                        <option value="">Seleccionar Tipo de Ejercicio</option>
+                        <option value="strength">Fuerza</option>
                         <option value="cardio">Cardio</option>
-                        <option value="flexibility">Flexibility</option>
+                        <option value="flexibility">Flexibilidad</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Number of Sets</label>
+                    <label>Número de Series</label>
                     <input type="number" id="editExerciseSets" value="${exercise.sets}" placeholder="4" min="1" max="10">
                 </div>
                 <div class="form-group">
-                    <label>Reps</label>
+                    <label>Repeticiones</label>
                     <input type="text" id="editExerciseReps" value="${exercise.reps}" placeholder="8-10">
                 </div>
                 <div class="form-actions">
-                    <button class="btn btn-primary" onclick="saveEditExercise(${exerciseId}, '${day}')">Save Changes</button>
-                    <button class="btn btn-secondary" onclick="cancelEditExercise(${exerciseId}, '${day}')">Cancel</button>
+                    <button class="btn btn-primary" onclick="saveEditExercise(${exerciseId}, '${day}')">Guardar Cambios</button>
+                    <button class="btn btn-secondary" onclick="cancelEditExercise(${exerciseId}, '${day}')">Cancelar</button>
                 </div>
             `;
 
@@ -1049,12 +1049,12 @@
             const reps = document.getElementById('editExerciseReps').value.trim();
 
             if (!name || !imageType || !sets || !reps) {
-                alert('Please fill in all fields');
+                alert('Por favor completa todos los campos');
                 return;
             }
 
             if (isNaN(sets) || sets < 1 || sets > 10) {
-                alert('Sets must be a number between 1 and 10');
+                alert('Las series deben ser un número entre 1 y 10');
                 return;
             }
 
@@ -1110,7 +1110,7 @@
             const exercise = workouts[day].find(ex => ex.id === exerciseId);
             if (!exercise) return;
 
-            if (confirm(`Are you sure you want to delete "${exercise.name}"?`)) {
+            if (confirm(`¿Estás seguro de que quieres eliminar "${exercise.name}"?`)) {
                 const exerciseIndex = workouts[day].findIndex(ex => ex.id === exerciseId);
                 if (exerciseIndex > -1) {
                     workouts[day].splice(exerciseIndex, 1);
