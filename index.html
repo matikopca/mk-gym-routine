@@ -5,6 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rutina de Gimnasio</title>
     <style>
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-card: rgba(0, 0, 0, 0.6);
+            --bg-input: rgba(0, 0, 0, 0.8);
+            --bg-checkbox: rgba(0, 0, 0, 0.4);
+            --text-primary: #ffffff;
+            --text-secondary: #aaaaaa;
+            --text-muted: #cccccc;
+            --border-color: rgba(255, 68, 68, 0.3);
+            --accent-color: #ff6666;
+            --accent-light: rgba(255, 68, 68, 0.2);
+            --shadow-color: rgba(255, 68, 68, 0.4);
+        }
+
+        body.light-theme {
+            --bg-primary: #f5f5f5;
+            --bg-secondary: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.9);
+            --bg-input: rgba(255, 255, 255, 0.95);
+            --bg-checkbox: rgba(245, 245, 245, 0.8);
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --text-muted: #333333;
+            --border-color: rgba(255, 68, 68, 0.4);
+            --accent-color: #ff4444;
+            --accent-light: rgba(255, 68, 68, 0.15);
+            --shadow-color: rgba(255, 68, 68, 0.3);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,15 +43,44 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%);
-            color: #ffffff;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
+            color: var(--text-primary);
             min-height: 100vh;
             padding: 20px;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         .container {
             max-width: 500px;
             margin: 0 auto;
+        }
+
+        .theme-toggle {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            padding: 10px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            height: fit-content;
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-input);
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--accent-color);
         }
 
         .header {
@@ -47,10 +106,17 @@
             stroke: url(#headerGradient);
         }
 
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
         .day-selector {
             margin-bottom: 30px;
             display: flex;
             justify-content: center;
+            align-items: center;
+            gap: 12px;
         }
 
         .day-dropdown {
@@ -61,10 +127,10 @@
         .day-select {
             width: 100%;
             padding: 15px 20px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid rgba(255, 68, 68, 0.3);
+            background: var(--bg-input);
+            border: 2px solid var(--border-color);
             border-radius: 25px;
-            color: #ffffff;
+            color: var(--text-primary);
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
@@ -78,19 +144,19 @@
         }
 
         .day-select:hover {
-            border-color: rgba(255, 68, 68, 0.5);
-            background-color: rgba(0, 0, 0, 0.9);
+            border-color: var(--accent-color);
+            background-color: var(--bg-card);
         }
 
         .day-select:focus {
             outline: none;
-            border-color: #ff6666;
-            box-shadow: 0 0 0 3px rgba(255, 102, 102, 0.2);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px var(--accent-light);
         }
 
         .day-select option {
-            background: #000000;
-            color: #ffffff;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             padding: 10px;
         }
 
@@ -107,67 +173,25 @@
             font-weight: 600;
             text-align: center;
             margin-bottom: 25px;
-            color: #ffffff;
+            color: var(--text-primary);
         }
 
         .exercise {
-            background: rgba(0, 0, 0, 0.6);
+            background: var(--bg-card);
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 20px;
-            border: 1px solid rgba(255, 68, 68, 0.3);
+            border: 1px solid var(--border-color);
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
-        }
-
-        .exercise.collapsed {
-            padding: 15px 20px;
-        }
-
-        .exercise.collapsed .exercise-content {
-            display: none;
         }
 
         .exercise-header {
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 15px;
-            cursor: pointer;
+            margin-bottom: 20px;
             position: relative;
-        }
-
-        .exercise-header:hover {
-            opacity: 0.8;
-        }
-
-        .expand-btn {
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 68, 68, 0.2);
-            border: 1px solid rgba(255, 68, 68, 0.4);
-            color: #ff6666;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .expand-btn:hover {
-            background: rgba(255, 68, 68, 0.3);
-            transform: translateY(-50%) scale(1.1);
-        }
-
-        .expand-btn.collapsed {
-            transform: translateY(-50%) rotate(180deg);
         }
 
         .exercise-controls {
@@ -199,14 +223,14 @@
         }
 
         .edit-btn {
-            background: rgba(120, 120, 120, 0.2);
-            color: #cccccc;
-            border: 1px solid rgba(120, 120, 120, 0.3);
+            background: var(--bg-checkbox);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
         }
 
         .edit-btn:hover {
-            background: rgba(120, 120, 120, 0.3);
-            color: #ffffff;
+            background: var(--bg-input);
+            color: var(--text-primary);
             transform: scale(1.1);
         }
 
@@ -231,6 +255,15 @@
             justify-content: center;
             color: white;
             flex-shrink: 0;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .exercise-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px var(--shadow-color);
         }
 
         .exercise-image svg {
@@ -241,6 +274,35 @@
             stroke-width: 2;
         }
 
+        .exercise-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .exercise-image::after {
+            content: '📷';
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .exercise-image:hover::after {
+            opacity: 1;
+        }
+
         .exercise-info h3 {
             font-size: 1.3rem;
             font-weight: 600;
@@ -248,69 +310,99 @@
         }
 
         .exercise-info p {
-            color: #aaa;
+            color: var(--text-secondary);
             font-size: 0.9rem;
         }
 
         .sets-container {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
         }
 
         .set {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 15px;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 68, 68, 0.1);
-        }
-
-        .set.completed {
-            opacity: 0.6;
-            text-decoration: line-through;
+            gap: 8px;
+            flex: 0 0 auto;
+            min-width: 80px;
         }
 
         .set-checkbox {
-            width: 24px;
-            height: 24px;
-            border: 2px solid #ff6666;
-            border-radius: 6px;
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            flex-shrink: 0;
+            background: var(--bg-checkbox);
+        }
+
+        .set-checkbox:hover {
+            background: var(--accent-light);
+            transform: scale(1.05);
         }
 
         .set-checkbox.checked {
-            background: #ff6666;
+            background: var(--accent-color);
             color: white;
+            border-color: var(--accent-color);
         }
 
         .set-checkbox.checked::after {
             content: '✓';
             font-weight: bold;
-            font-size: 14px;
+            font-size: 20px;
         }
 
-        .set-info {
-            flex: 1;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .set-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-weight: 500;
         }
 
-        .set-number {
+        .set-checkbox.checked + .set-label {
+            color: var(--accent-color);
             font-weight: 600;
-            color: #ff6666;
         }
 
-        .set-reps {
-            color: #aaa;
+        .set-weight-container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .set-weight-input {
+            width: 60px;
+            padding: 6px 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .set-weight-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px var(--accent-light);
+        }
+
+        .set-weight-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
         }
 
         .add-exercise {
@@ -329,20 +421,170 @@
 
         .add-exercise:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 68, 68, 0.4);
+            box-shadow: 0 8px 25px var(--shadow-color);
         }
 
         .exercise-form {
-            background: rgba(0, 0, 0, 0.6);
+            background: var(--bg-card);
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 20px;
-            border: 1px solid rgba(255, 68, 68, 0.3);
+            border: 1px solid var(--border-color);
             display: none;
         }
 
         .exercise-form.active {
             display: block;
+        }
+
+        .image-upload-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .image-upload-modal.active {
+            display: flex;
+        }
+
+        .image-upload-content {
+            background: var(--bg-card);
+            border-radius: 15px;
+            padding: 25px;
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-upload-content h3 {
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .image-upload-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .image-upload-tab {
+            flex: 1;
+            padding: 10px;
+            background: var(--bg-checkbox);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            color: var(--text-secondary);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .image-upload-tab.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        .image-upload-panel {
+            display: none;
+        }
+
+        .image-upload-panel.active {
+            display: block;
+        }
+
+        .image-preview {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            display: none;
+        }
+
+        .image-preview.show {
+            display: block;
+        }
+
+        .image-preview-wrapper {
+            position: relative;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .image-remove-icon {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(220, 53, 69, 0.9);
+            border: 2px solid white;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-remove-icon:hover {
+            background: rgba(220, 53, 69, 1);
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .image-remove-icon svg {
+            width: 16px;
+            height: 16px;
+            stroke: white;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            display: none;
+        }
+
+        .file-input-button {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent-light);
+            border: 2px dashed var(--accent-color);
+            border-radius: 8px;
+            color: var(--accent-color);
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .file-input-button:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .image-upload-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
         }
 
         .form-group {
@@ -353,33 +595,33 @@
             display: block;
             margin-bottom: 5px;
             font-weight: 600;
-            color: #ff6666;
+            color: var(--accent-color);
         }
 
         .form-group input {
             width: 100%;
             padding: 12px;
-            border: 1px solid rgba(255, 68, 68, 0.3);
+            border: 1px solid var(--border-color);
             border-radius: 8px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
+            background: var(--bg-input);
+            color: var(--text-primary);
             font-size: 1rem;
         }
 
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
-            border-color: #ff6666;
-            box-shadow: 0 0 0 2px rgba(255, 102, 102, 0.2);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px var(--accent-light);
         }
 
         .form-group select {
             width: 100%;
             padding: 12px;
-            border: 1px solid rgba(255, 68, 68, 0.3);
+            border: 1px solid var(--border-color);
             border-radius: 8px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
+            background: var(--bg-input);
+            color: var(--text-primary);
             font-size: 1rem;
         }
 
@@ -399,14 +641,26 @@
         }
 
         .btn-primary {
-            background: #ff6666;
+            background: var(--accent-color);
             color: white;
         }
 
         .btn-secondary {
-            background: rgba(255, 68, 68, 0.2);
-            color: #ff6666;
-            border: 1px solid rgba(255, 68, 68, 0.3);
+            background: var(--accent-light);
+            color: var(--accent-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-danger {
+            background: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: rgba(220, 53, 69, 0.3);
+            color: #dc3545;
+            transform: translateY(-1px);
         }
 
         .btn:hover {
@@ -421,9 +675,9 @@
         }
 
         .btn-reset-day {
-            background: rgba(60, 60, 60, 0.8);
-            border: 1px solid rgba(80, 80, 80, 0.6);
-            color: #cccccc;
+            background: var(--bg-checkbox);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
             padding: 8px 16px;
             border-radius: 20px;
             font-size: 0.9rem;
@@ -435,15 +689,15 @@
         }
 
         .btn-reset-day:hover {
-            background: rgba(80, 80, 80, 0.9);
-            color: #ffffff;
+            background: var(--bg-input);
+            color: var(--text-primary);
             transform: translateY(-1px);
         }
 
         .btn-reset-all {
-            background: rgba(40, 40, 40, 0.8);
-            border: 1px solid rgba(60, 60, 60, 0.6);
-            color: #aaaaaa;
+            background: var(--bg-checkbox);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
             padding: 8px 16px;
             border-radius: 20px;
             font-size: 0.9rem;
@@ -455,15 +709,15 @@
         }
 
         .btn-reset-all:hover {
-            background: rgba(60, 60, 60, 0.9);
-            color: #ffffff;
+            background: var(--bg-input);
+            color: var(--text-primary);
             transform: translateY(-1px);
         }
 
         .exercise.completed {
             opacity: 0.7;
-            background: rgba(80, 80, 80, 0.2);
-            border-color: rgba(100, 100, 100, 0.4);
+            background: var(--bg-checkbox);
+            border-color: var(--border-color);
         }
 
         .exercise.completed .exercise-info h3 {
@@ -477,6 +731,15 @@
             
             .header h1 {
                 font-size: 2rem;
+            }
+            
+            .theme-toggle {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+            
+            .theme-toggle span {
+                display: none;
             }
             
             .day-btn {
@@ -529,6 +792,20 @@
                     <option value="friday">Viernes</option>
                 </select>
             </div>
+            <button class="theme-toggle" onclick="toggleTheme()" title="Cambiar tema">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="themeIcon">
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/>
+                    <line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/>
+                    <line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                </svg>
+                <span id="themeText">Claro</span>
+            </button>
         </div>
 
         <div id="monday" class="workout-day active">
@@ -667,6 +944,45 @@
         </div>
     </div>
 
+    <!-- Image Upload Modal -->
+    <div class="image-upload-modal" id="imageUploadModal" onclick="closeImageModal(event)">
+        <div class="image-upload-content" onclick="event.stopPropagation()">
+            <h3>Agregar Imagen</h3>
+            <div class="image-upload-tabs">
+                <div class="image-upload-tab active" onclick="switchImageTab('url')">URL</div>
+                <div class="image-upload-tab" onclick="switchImageTab('upload')">Subir</div>
+            </div>
+            <div class="image-upload-panel active" id="urlPanel">
+                <div class="form-group">
+                    <label>URL de la Imagen</label>
+                    <input type="text" id="imageUrlInput" placeholder="https://ejemplo.com/imagen.jpg" oninput="previewImageFromUrl(this.value)">
+                </div>
+            </div>
+            <div class="image-upload-panel" id="uploadPanel">
+                <div class="file-input-wrapper">
+                    <input type="file" id="imageFileInput" accept="image/*" onchange="handleFileUpload(this.files)">
+                    <label for="imageFileInput" class="file-input-button">Seleccionar Archivo</label>
+                </div>
+            </div>
+            <div class="image-preview-wrapper">
+                <img id="imagePreview" class="image-preview" alt="Preview">
+                <button class="image-remove-icon" id="removeImageBtn" onclick="removeImage()" title="Eliminar imagen" style="display: none;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 6h18"/>
+                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                        <line x1="10" y1="11" x2="10" y2="17"/>
+                        <line x1="14" y1="11" x2="14" y2="17"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="image-upload-actions">
+                <button class="btn btn-primary" onclick="saveImage()">Guardar</button>
+                <button class="btn btn-secondary" onclick="closeImageModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Sample workout data
         const defaultWorkouts = {
@@ -722,8 +1038,56 @@
         let currentDay = 'monday';
         let workouts = JSON.parse(localStorage.getItem('gymWorkouts')) || defaultWorkouts;
 
+        // Theme management
+        function getTheme() {
+            return localStorage.getItem('theme') || 'dark';
+        }
+
+        function setTheme(theme) {
+            localStorage.setItem('theme', theme);
+            document.body.className = theme === 'light' ? 'light-theme' : '';
+            updateThemeButton(theme);
+        }
+
+        function updateThemeButton(theme) {
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+            
+            if (theme === 'light') {
+                // Show moon icon for switching to dark
+                themeIcon.innerHTML = `
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                `;
+                themeText.textContent = 'Oscuro';
+            } else {
+                // Show sun icon for switching to light
+                themeIcon.innerHTML = `
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/>
+                    <line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/>
+                    <line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                `;
+                themeText.textContent = 'Claro';
+            }
+        }
+
+        function toggleTheme() {
+            const currentTheme = getTheme();
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            setTheme(newTheme);
+        }
+
         // Initialize the app
         function init() {
+            // Load saved theme
+            const savedTheme = getTheme();
+            setTheme(savedTheme);
+            
             setupDaySelector();
             loadWorkouts();
             saveWorkouts();
@@ -769,49 +1133,66 @@
             exerciseDiv.className = 'exercise';
             exerciseDiv.dataset.exerciseId = exercise.id;
             
+            // Initialize weights object if it doesn't exist
+            if (!exercise.weights) {
+                exercise.weights = {};
+            }
+            
             const isCompleted = exercise.completedSets.length === exercise.sets;
-            const isCollapsed = exercise.collapsed === true; // Only check explicit collapsed state
             
             if (isCompleted) {
                 exerciseDiv.classList.add('completed');
-            }
-            
-            if (isCollapsed) {
-                exerciseDiv.classList.add('collapsed');
             }
 
             const setsHtml = Array.from({length: exercise.sets}, (_, i) => {
                 const setNumber = i + 1;
                 const isSetCompleted = exercise.completedSets.includes(setNumber);
+                const weight = exercise.weights[setNumber] || '';
                 return `
-                    <div class="set ${isSetCompleted ? 'completed' : ''}">
+                    <div class="set">
                         <div class="set-checkbox ${isSetCompleted ? 'checked' : ''}" 
                              onclick="toggleSet(${exercise.id}, ${setNumber}, '${day}')"></div>
-                        <div class="set-info">
-                            <span class="set-number">Serie ${setNumber}</span>
-                            <span class="set-reps">${exercise.reps} rep</span>
+                        <span class="set-label">Serie ${setNumber}</span>
+                        <div class="set-weight-container">
+                            <input type="number" 
+                                   class="set-weight-input" 
+                                   value="${weight}" 
+                                   placeholder="0" 
+                                   min="0" 
+                                   step="0.5"
+                                   onchange="updateWeight(${exercise.id}, ${setNumber}, '${day}', this.value)"
+                                   onclick="event.stopPropagation()">
+                            <span class="set-weight-label">Kgs</span>
                         </div>
                     </div>
                 `;
             }).join('');
 
-            const expandIcon = isCollapsed ? '▼' : '▲';
+            // Determine image source - prefer imageUrl or imageData over default SVG
+            let imageContent = '';
+            if (exercise.imageUrl) {
+                imageContent = `<img src="${exercise.imageUrl}" alt="${exercise.name}" onerror="this.onerror=null; this.parentElement.innerHTML='${exercise.image}'">`;
+            } else if (exercise.imageData) {
+                imageContent = `<img src="${exercise.imageData}" alt="${exercise.name}">`;
+            } else {
+                imageContent = exercise.image || '';
+            }
 
             exerciseDiv.innerHTML = `
-                <div class="exercise-header" onclick="toggleExercise(${exercise.id}, '${day}')">
-                    <div class="exercise-image">${exercise.image}</div>
+                <div class="exercise-header">
+                    <div class="exercise-image" onclick="openImageModal(${exercise.id}, '${day}')">${imageContent}</div>
                     <div class="exercise-info">
                         <h3>${exercise.name}</h3>
                         <p>${exercise.sets} series × ${exercise.reps} rep</p>
                     </div>
                     <div class="exercise-controls">
-                        <button class="control-btn edit-btn" onclick="event.stopPropagation(); editExercise(${exercise.id}, '${day}')" title="Editar Ejercicio">
+                        <button class="control-btn edit-btn" onclick="editExercise(${exercise.id}, '${day}')" title="Editar Ejercicio">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                                 <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                             </svg>
                         </button>
-                        <button class="control-btn delete-btn" onclick="event.stopPropagation(); deleteExercise(${exercise.id}, '${day}')" title="Eliminar Ejercicio">
+                        <button class="control-btn delete-btn" onclick="deleteExercise(${exercise.id}, '${day}')" title="Eliminar Ejercicio">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M3 6h18"/>
                                 <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
@@ -821,12 +1202,9 @@
                             </svg>
                         </button>
                     </div>
-                    <div class="expand-btn ${isCollapsed ? 'collapsed' : ''}">${expandIcon}</div>
                 </div>
-                <div class="exercise-content">
-                    <div class="sets-container">
-                        ${setsHtml}
-                    </div>
+                <div class="sets-container">
+                    ${setsHtml}
                 </div>
             `;
 
@@ -849,7 +1227,6 @@
             const isCompleted = exercise.completedSets.length === exercise.sets;
             if (isCompleted) {
                 exercise.completed = true;
-                exercise.collapsed = true; // Auto-collapse when completed
             } else {
                 exercise.completed = false;
             }
@@ -858,14 +1235,210 @@
             loadWorkouts();
         }
 
-        // Toggle exercise expand/collapse
-        function toggleExercise(exerciseId, day) {
+        // Update weight for a set
+        function updateWeight(exerciseId, setNumber, day, weight) {
             const exercise = workouts[day].find(ex => ex.id === exerciseId);
             if (!exercise) return;
 
-            exercise.collapsed = !exercise.collapsed;
+            // Initialize weights object if it doesn't exist
+            if (!exercise.weights) {
+                exercise.weights = {};
+            }
+
+            // Store weight (convert to number or empty string if empty)
+            const weightValue = weight && weight.trim() !== '' ? parseFloat(weight) : '';
+            if (weightValue === '') {
+                delete exercise.weights[setNumber];
+            } else {
+                exercise.weights[setNumber] = weightValue;
+            }
+
+            saveWorkouts();
+        }
+
+        // Image modal management
+        let currentImageExerciseId = null;
+        let currentImageDay = null;
+        let currentImageData = null;
+        let currentImageUrl = null;
+
+        function openImageModal(exerciseId, day) {
+            currentImageExerciseId = exerciseId;
+            currentImageDay = day;
+            currentImageData = null;
+            currentImageUrl = null;
+
+            const exercise = workouts[day].find(ex => ex.id === exerciseId);
+            const removeBtn = document.getElementById('removeImageBtn');
+            
+            if (exercise) {
+                // Pre-fill with existing image if available
+                if (exercise.imageUrl) {
+                    document.getElementById('imageUrlInput').value = exercise.imageUrl;
+                    previewImageFromUrl(exercise.imageUrl);
+                    removeBtn.style.display = 'block';
+                } else if (exercise.imageData) {
+                    document.getElementById('imageUrlInput').value = '';
+                    showImagePreview(exercise.imageData);
+                    removeBtn.style.display = 'block';
+                } else {
+                    document.getElementById('imageUrlInput').value = '';
+                    hideImagePreview();
+                    removeBtn.style.display = 'none';
+                }
+            } else {
+                removeBtn.style.display = 'none';
+            }
+
+            // Reset file input
+            document.getElementById('imageFileInput').value = '';
+            
+            // Show modal
+            document.getElementById('imageUploadModal').classList.add('active');
+            // Switch to URL tab by default
+            switchImageTab('url');
+        }
+
+        function closeImageModal(event) {
+            // Content div stops propagation, so this only fires on backdrop clicks or button clicks
+            // Always close when called
+            document.getElementById('imageUploadModal').classList.remove('active');
+            document.getElementById('imageUrlInput').value = '';
+            document.getElementById('imageFileInput').value = '';
+            hideImagePreview();
+            currentImageExerciseId = null;
+            currentImageDay = null;
+            currentImageData = null;
+            currentImageUrl = null;
+        }
+
+        function switchImageTab(tab) {
+            // Update tab buttons
+            document.querySelectorAll('.image-upload-tab').forEach(t => t.classList.remove('active'));
+            if (tab === 'url') {
+                document.querySelectorAll('.image-upload-tab')[0].classList.add('active');
+                document.getElementById('urlPanel').classList.add('active');
+                document.getElementById('uploadPanel').classList.remove('active');
+            } else {
+                document.querySelectorAll('.image-upload-tab')[1].classList.add('active');
+                document.getElementById('urlPanel').classList.remove('active');
+                document.getElementById('uploadPanel').classList.add('active');
+            }
+        }
+
+        function previewImageFromUrl(url) {
+            const removeBtn = document.getElementById('removeImageBtn');
+            if (url && url.trim() !== '') {
+                currentImageUrl = url.trim();
+                showImagePreview(url);
+                removeBtn.style.display = 'block';
+            } else {
+                currentImageUrl = null;
+                hideImagePreview();
+                // Only hide remove button if exercise doesn't have existing image
+                const exercise = workouts[currentImageDay]?.find(ex => ex.id === currentImageExerciseId);
+                if (!exercise || (!exercise.imageUrl && !exercise.imageData)) {
+                    removeBtn.style.display = 'none';
+                }
+            }
+        }
+
+        function handleFileUpload(files) {
+            const removeBtn = document.getElementById('removeImageBtn');
+            if (files && files.length > 0) {
+                const file = files[0];
+                if (!file.type.startsWith('image/')) {
+                    alert('Por favor selecciona un archivo de imagen');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentImageData = e.target.result;
+                    currentImageUrl = null;
+                    showImagePreview(e.target.result);
+                    removeBtn.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function showImagePreview(src) {
+            const preview = document.getElementById('imagePreview');
+            preview.src = src;
+            preview.classList.add('show');
+        }
+
+        function hideImagePreview() {
+            const preview = document.getElementById('imagePreview');
+            preview.src = '';
+            preview.classList.remove('show');
+        }
+
+        function saveImage() {
+            if (!currentImageExerciseId || !currentImageDay) {
+                alert('Error: No se pudo identificar el ejercicio');
+                return;
+            }
+
+            const exercise = workouts[currentImageDay].find(ex => ex.id === currentImageExerciseId);
+            if (!exercise) {
+                alert('Error: Ejercicio no encontrado');
+                return;
+            }
+
+            // Save image data or URL
+            if (currentImageData) {
+                exercise.imageData = currentImageData;
+                exercise.imageUrl = null;
+            } else if (currentImageUrl) {
+                exercise.imageUrl = currentImageUrl;
+                exercise.imageData = null;
+            } else {
+                // Remove image (revert to default SVG)
+                delete exercise.imageUrl;
+                delete exercise.imageData;
+            }
+
             saveWorkouts();
             loadWorkouts();
+            closeImageModal();
+        }
+
+        function removeImage() {
+            if (!currentImageExerciseId || !currentImageDay) {
+                alert('Error: No se pudo identificar el ejercicio');
+                return;
+            }
+
+            const exercise = workouts[currentImageDay].find(ex => ex.id === currentImageExerciseId);
+            if (!exercise) {
+                alert('Error: Ejercicio no encontrado');
+                return;
+            }
+
+            // Remove image data
+            delete exercise.imageUrl;
+            delete exercise.imageData;
+
+            // Clear current preview data
+            currentImageData = null;
+            currentImageUrl = null;
+
+            // Clear inputs and preview
+            document.getElementById('imageUrlInput').value = '';
+            document.getElementById('imageFileInput').value = '';
+            hideImagePreview();
+
+            // Hide remove button
+            document.getElementById('removeImageBtn').style.display = 'none';
+
+            // Save and reload
+            saveWorkouts();
+            loadWorkouts();
+            
+            // Close modal after removal
+            closeImageModal();
         }
 
         // Show add exercise form
@@ -954,7 +1527,8 @@
                 image: iconMap[imageType] || iconMap.strength,
                 sets: sets,
                 reps: reps,
-                completedSets: []
+                completedSets: [],
+                weights: {}
             };
 
             workouts[day].push(newExercise);
@@ -969,7 +1543,6 @@
                 workouts[day].forEach(exercise => {
                     exercise.completedSets = [];
                     exercise.completed = false;
-                    exercise.collapsed = false;
                 });
                 saveWorkouts();
                 loadWorkouts();
@@ -983,7 +1556,6 @@
                     workouts[day].forEach(exercise => {
                         exercise.completedSets = [];
                         exercise.completed = false;
-                        exercise.collapsed = false;
                     });
                 });
                 saveWorkouts();
