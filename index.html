@@ -281,26 +281,33 @@
             border-radius: 10px;
         }
 
-        .exercise-image::after {
-            content: '📷';
+        .exercise-image-icon {
             position: absolute;
-            bottom: 2px;
-            right: 2px;
-            font-size: 12px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
+            bottom: 4px;
+            right: 4px;
+            width: 20px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            line-height: 1;
+            opacity: 0.9;
+            transition: all 0.3s ease;
+            pointer-events: none;
         }
 
-        .exercise-image:hover::after {
+        .exercise-image:hover .exercise-image-icon {
             opacity: 1;
+            background: rgba(0, 0, 0, 0.85);
+        }
+
+        .exercise-image-icon svg {
+            width: 12px;
+            height: 12px;
+            stroke: white;
+            fill: none;
+            stroke-width: 2;
         }
 
         .exercise-info h3 {
@@ -320,6 +327,7 @@
             gap: 12px;
             padding-top: 15px;
             border-top: 1px solid var(--border-color);
+            justify-content: space-between;
         }
 
         .set {
@@ -327,8 +335,8 @@
             flex-direction: column;
             align-items: center;
             gap: 8px;
-            flex: 0 0 auto;
-            min-width: 80px;
+            flex: 1;
+            min-width: 100px;
         }
 
         .set-checkbox {
@@ -1180,7 +1188,16 @@
 
             exerciseDiv.innerHTML = `
                 <div class="exercise-header">
-                    <div class="exercise-image" onclick="openImageModal(${exercise.id}, '${day}')">${imageContent}</div>
+                    <div class="exercise-image" onclick="openImageModal(${exercise.id}, '${day}')">
+                        ${imageContent}
+                        <div class="exercise-image-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                <circle cx="8.5" cy="8.5" r="1.5"/>
+                                <path d="M21 15l-5-5L5 21"/>
+                            </svg>
+                        </div>
+                    </div>
                     <div class="exercise-info">
                         <h3>${exercise.name}</h3>
                         <p>${exercise.sets} series × ${exercise.reps} rep</p>
