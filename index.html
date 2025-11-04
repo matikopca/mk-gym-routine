@@ -18,6 +18,8 @@
             --accent-color: #ff6666;
             --accent-light: rgba(255, 68, 68, 0.2);
             --shadow-color: rgba(255, 68, 68, 0.4);
+            --gradient-start: #ff4444;
+            --gradient-end: #ff6666;
         }
 
         body.light-theme {
@@ -29,10 +31,7 @@
             --text-primary: #1a1a1a;
             --text-secondary: #555555;
             --text-muted: #333333;
-            --border-color: rgba(255, 68, 68, 0.4);
-            --accent-color: #ff4444;
-            --accent-light: rgba(255, 68, 68, 0.15);
-            --shadow-color: rgba(255, 68, 68, 0.3);
+            /* Accent colors are set dynamically by color picker */
         }
 
         * {
@@ -83,6 +82,57 @@
             stroke: var(--accent-color);
         }
 
+        .color-picker-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .color-picker-label {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            padding: 10px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            height: fit-content;
+        }
+
+        .color-picker-label:hover {
+            background: var(--bg-input);
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .color-picker-label svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--accent-color);
+        }
+
+        .color-picker-input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            pointer-events: none;
+        }
+
+        .color-preview {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            background: var(--accent-color);
+            flex-shrink: 0;
+        }
+
         .header {
             text-align: center;
             margin-bottom: 30px;
@@ -91,7 +141,7 @@
         .header h1 {
             font-size: 2.5rem;
             font-weight: 700;
-            background: linear-gradient(45deg, #ff4444, #ff6666);
+            background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -283,7 +333,7 @@
             width: 60px;
             height: 60px;
             border-radius: 10px;
-            background: linear-gradient(45deg, #ff4444, #ff6666);
+            background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
             display: flex;
             align-items: center;
             justify-content: center;
@@ -442,7 +492,7 @@
         }
 
         .add-exercise {
-            background: linear-gradient(45deg, #ff4444, #ff6666);
+            background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
             border: none;
             color: white;
             padding: 15px 25px;
@@ -842,6 +892,15 @@
                 </svg>
                 <span id="themeText">Claro</span>
             </button>
+            <div class="color-picker-wrapper">
+                <input type="color" id="colorPicker" class="color-picker-input" value="#ff6666" onchange="updateCustomColor(this.value)">
+                <label for="colorPicker" class="color-picker-label" title="Personalizar color">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+                    </svg>
+                    <div class="color-preview" id="colorPreview"></div>
+                </label>
+            </div>
         </div>
 
         <div id="monday" class="workout-day active">
@@ -1083,6 +1142,9 @@
             localStorage.setItem('theme', theme);
             document.body.className = theme === 'light' ? 'light-theme' : '';
             updateThemeButton(theme);
+            // Reapply custom color with theme-appropriate opacity
+            const savedColor = getCustomColor();
+            applyCustomColor(savedColor);
         }
 
         function updateThemeButton(theme) {
@@ -1118,11 +1180,111 @@
             setTheme(newTheme);
         }
 
+        // Color customization functions
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        function rgbToRgba(rgb, alpha) {
+            return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
+        }
+
+        function getCustomColor() {
+            return localStorage.getItem('customColor') || '#ff6666';
+        }
+
+        function setCustomColor(color) {
+            localStorage.setItem('customColor', color);
+            applyCustomColor(color);
+        }
+
+        function applyCustomColor(color) {
+            const rgb = hexToRgb(color);
+            if (!rgb) return;
+
+            // Calculate related colors
+            const borderColor = rgbToRgba(rgb, 0.3);
+            const accentLight = rgbToRgba(rgb, 0.2);
+            const shadowColor = rgbToRgba(rgb, 0.4);
+            
+            // For light theme, adjust opacity
+            const isLight = document.body.classList.contains('light-theme');
+            const lightBorderColor = rgbToRgba(rgb, 0.4);
+            const lightAccentLight = rgbToRgba(rgb, 0.15);
+            const lightShadowColor = rgbToRgba(rgb, 0.3);
+
+            // Create a slightly darker version for gradient start
+            const darkerRgb = {
+                r: Math.max(0, rgb.r - 20),
+                g: Math.max(0, rgb.g - 20),
+                b: Math.max(0, rgb.b - 20)
+            };
+            const darkerColor = `rgb(${darkerRgb.r}, ${darkerRgb.g}, ${darkerRgb.b})`;
+
+            // Create a slightly lighter version for gradient end
+            const lighterRgb = {
+                r: Math.min(255, rgb.r + 20),
+                g: Math.min(255, rgb.g + 20),
+                b: Math.min(255, rgb.b + 20)
+            };
+            const lighterColor = `rgb(${lighterRgb.r}, ${lighterRgb.g}, ${lighterRgb.b})`;
+
+            // Apply to root CSS variables
+            document.documentElement.style.setProperty('--accent-color', color);
+            document.documentElement.style.setProperty('--border-color', isLight ? lightBorderColor : borderColor);
+            document.documentElement.style.setProperty('--accent-light', isLight ? lightAccentLight : accentLight);
+            document.documentElement.style.setProperty('--shadow-color', isLight ? lightShadowColor : shadowColor);
+            document.documentElement.style.setProperty('--gradient-start', darkerColor);
+            document.documentElement.style.setProperty('--gradient-end', lighterColor);
+
+            // Update header gradient
+            const gradient = document.getElementById('headerGradient');
+            if (gradient) {
+                gradient.querySelector('stop[offset="0%"]').setAttribute('style', `stop-color:${darkerColor};stop-opacity:1`);
+                gradient.querySelector('stop[offset="100%"]').setAttribute('style', `stop-color:${lighterColor};stop-opacity:1`);
+            }
+
+            // Update color preview
+            const colorPreview = document.getElementById('colorPreview');
+            if (colorPreview) {
+                colorPreview.style.background = color;
+            }
+
+            // Update color picker value
+            const colorPicker = document.getElementById('colorPicker');
+            if (colorPicker) {
+                colorPicker.value = color;
+            }
+
+            // Update day select chevron color
+            const daySelect = document.querySelector('.day-select');
+            if (daySelect) {
+                // Create SVG with custom color
+                const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"></polyline></svg>`;
+                // URL encode the SVG
+                const encodedSvg = encodeURIComponent(svgContent);
+                daySelect.style.backgroundImage = `url("data:image/svg+xml;charset=UTF-8,${encodedSvg}")`;
+            }
+        }
+
+        function updateCustomColor(color) {
+            setCustomColor(color);
+        }
+
         // Initialize the app
         function init() {
             // Load saved theme
             const savedTheme = getTheme();
             setTheme(savedTheme);
+            
+            // Load saved custom color
+            const savedColor = getCustomColor();
+            applyCustomColor(savedColor);
             
             setupDaySelector();
             loadWorkouts();
