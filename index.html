@@ -194,15 +194,28 @@
             position: relative;
         }
 
+        .exercise-info {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .exercise-info h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
         .exercise-controls {
-            position: absolute;
-            right: 40px;
-            top: 50%;
-            transform: translateY(-50%);
             display: flex;
             gap: 8px;
             opacity: 0;
             transition: opacity 0.3s ease;
+            flex-shrink: 0;
+            margin-left: auto;
         }
 
         .exercise:hover .exercise-controls {
@@ -310,12 +323,6 @@
             stroke-width: 2;
         }
 
-        .exercise-info h3 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
         .exercise-info p {
             color: var(--text-secondary);
             font-size: 0.9rem;
@@ -323,27 +330,28 @@
 
         .sets-container {
             display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
+            flex-wrap: nowrap;
+            gap: 8px;
             padding-top: 15px;
             border-top: 1px solid var(--border-color);
             justify-content: space-between;
+            align-items: flex-end;
         }
 
         .set {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             flex: 1;
-            min-width: 100px;
+            min-width: 0;
         }
 
         .set-checkbox {
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             border: 2px solid var(--accent-color);
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -366,11 +374,11 @@
         .set-checkbox.checked::after {
             content: '✓';
             font-weight: bold;
-            font-size: 20px;
+            font-size: 18px;
         }
 
         .set-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-secondary);
             text-align: center;
             font-weight: 500;
@@ -382,21 +390,20 @@
         }
 
         .set-weight-container {
-            display: flex;
-            align-items: center;
-            gap: 5px;
             width: 100%;
+            display: flex;
             justify-content: center;
         }
 
         .set-weight-input {
-            width: 60px;
-            padding: 6px 8px;
+            width: 100%;
+            max-width: 50px;
+            padding: 4px 6px;
             border: 1px solid var(--border-color);
             border-radius: 6px;
             background: var(--bg-input);
             color: var(--text-primary);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-align: center;
             transition: all 0.3s ease;
         }
@@ -405,12 +412,6 @@
             outline: none;
             border-color: var(--accent-color);
             box-shadow: 0 0 0 2px var(--accent-light);
-        }
-
-        .set-weight-label {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            font-weight: 500;
         }
 
         .add-exercise {
@@ -1165,12 +1166,11 @@
                             <input type="number" 
                                    class="set-weight-input" 
                                    value="${weight}" 
-                                   placeholder="0" 
+                                   placeholder="Kgs" 
                                    min="0" 
                                    step="0.5"
                                    onchange="updateWeight(${exercise.id}, ${setNumber}, '${day}', this.value)"
                                    onclick="event.stopPropagation()">
-                            <span class="set-weight-label">Kgs</span>
                         </div>
                     </div>
                 `;
@@ -1220,8 +1220,8 @@
                         </button>
                     </div>
                 </div>
-                <div class="sets-container">
-                    ${setsHtml}
+                    <div class="sets-container">
+                        ${setsHtml}
                 </div>
             `;
 
@@ -1481,7 +1481,7 @@
                 </div>
                 <div class="form-group">
                     <label>Número de Series</label>
-                    <input type="number" id="exerciseSets" placeholder="4" min="1" max="10">
+                    <input type="number" id="exerciseSets" placeholder="4" min="1" max="4">
                 </div>
                 <div class="form-group">
                     <label>Repeticiones</label>
@@ -1610,7 +1610,7 @@
                 </div>
                 <div class="form-group">
                     <label>Número de Series</label>
-                    <input type="number" id="editExerciseSets" value="${exercise.sets}" placeholder="4" min="1" max="10">
+                    <input type="number" id="editExerciseSets" value="${exercise.sets}" placeholder="4" min="1" max="4">
                 </div>
                 <div class="form-group">
                     <label>Repeticiones</label>
@@ -1642,8 +1642,8 @@
                 return;
             }
 
-            if (isNaN(sets) || sets < 1 || sets > 10) {
-                alert('Las series deben ser un número entre 1 y 10');
+            if (isNaN(sets) || sets < 1 || sets > 4) {
+                alert('Las series deben ser un número entre 1 y 4');
                 return;
             }
 
