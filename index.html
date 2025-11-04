@@ -194,6 +194,27 @@
             position: relative;
         }
 
+        .exercise-header.expandable {
+            cursor: pointer;
+        }
+
+        .exercise-header.expandable:hover {
+            opacity: 0.9;
+        }
+
+        .expand-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+            color: var(--text-secondary);
+        }
+
+        .exercise-header.collapsed .expand-icon {
+            transform: rotate(180deg);
+        }
+
         .exercise-info {
             flex: 1;
             min-width: 0;
@@ -336,6 +357,12 @@
             border-top: 1px solid var(--border-color);
             justify-content: space-between;
             align-items: flex-end;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .sets-container.collapsed {
+            display: none;
         }
 
         .set {
@@ -1152,6 +1179,11 @@
             if (isCompleted) {
                 exerciseDiv.classList.add('completed');
             }
+            
+            // Initialize collapsed state if not set (default to collapsed when completed)
+            if (exercise.collapsed === undefined) {
+                exercise.collapsed = isCompleted;
+            }
 
             const setsHtml = Array.from({length: exercise.sets}, (_, i) => {
                 const setNumber = i + 1;
@@ -1186,9 +1218,17 @@
                 imageContent = exercise.image || '';
             }
 
+            // Add expand icon if all sets are completed
+            const expandIcon = isCompleted ? `
+                <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            ` : '';
+
             exerciseDiv.innerHTML = `
-                <div class="exercise-header">
-                    <div class="exercise-image" onclick="openImageModal(${exercise.id}, '${day}')">
+                <div class="exercise-header ${isCompleted ? 'expandable' : ''} ${exercise.collapsed ? 'collapsed' : ''}" 
+                     ${isCompleted ? `onclick="toggleExerciseSets(${exercise.id}, '${day}')"` : ''}>
+                    <div class="exercise-image" onclick="event.stopPropagation(); openImageModal(${exercise.id}, '${day}')">
                         ${imageContent}
                         <div class="exercise-image-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1202,7 +1242,8 @@
                         <h3>${exercise.name}</h3>
                         <p>${exercise.sets} series × ${exercise.reps} rep</p>
                     </div>
-                    <div class="exercise-controls">
+                    ${expandIcon}
+                    <div class="exercise-controls" onclick="event.stopPropagation()">
                         <button class="control-btn edit-btn" onclick="editExercise(${exercise.id}, '${day}')" title="Editar Ejercicio">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
@@ -1220,12 +1261,27 @@
                         </button>
                     </div>
                 </div>
-                    <div class="sets-container">
+                <div class="sets-container ${exercise.collapsed ? 'collapsed' : ''}">
                         ${setsHtml}
                 </div>
             `;
 
             return exerciseDiv;
+        }
+
+        // Toggle exercise sets visibility
+        function toggleExerciseSets(exerciseId, day) {
+            const exercise = workouts[day].find(ex => ex.id === exerciseId);
+            if (!exercise) return;
+
+            // Only allow toggle if all sets are completed
+            const isCompleted = exercise.completedSets.length === exercise.sets;
+            if (!isCompleted) return;
+
+            // Toggle collapsed state
+            exercise.collapsed = !exercise.collapsed;
+            saveWorkouts();
+            loadWorkouts();
         }
 
         // Toggle set completion
@@ -1244,8 +1300,12 @@
             const isCompleted = exercise.completedSets.length === exercise.sets;
             if (isCompleted) {
                 exercise.completed = true;
+                // Auto-collapse when all sets are completed
+                exercise.collapsed = true;
             } else {
                 exercise.completed = false;
+                // Always show sets when not all completed
+                exercise.collapsed = false;
             }
 
             saveWorkouts();
