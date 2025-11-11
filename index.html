@@ -1347,6 +1347,11 @@
                 exercise.collapsed = isCompleted;
             }
 
+            // Ensure exercises that aren't completed aren't stuck collapsed from previous data
+            if (!isCompleted && exercise.collapsed) {
+                exercise.collapsed = false;
+            }
+
             const setsHtml = Array.from({length: exercise.sets}, (_, i) => {
                 const setNumber = i + 1;
                 const isSetCompleted = exercise.completedSets.includes(setNumber);
@@ -1380,16 +1385,18 @@
                 imageContent = exercise.image || '';
             }
 
-            // Add expand icon if all sets are completed
-            const expandIcon = isCompleted ? `
+            const shouldShowExpand = isCompleted || exercise.collapsed;
+
+            // Add expand icon if eligible
+            const expandIcon = shouldShowExpand ? `
                 <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
             ` : '';
 
             exerciseDiv.innerHTML = `
-                <div class="exercise-header ${isCompleted ? 'expandable' : ''} ${exercise.collapsed ? 'collapsed' : ''}" 
-                     ${isCompleted ? `onclick="toggleExerciseSets(${exercise.id}, '${day}')"` : ''}>
+                <div class="exercise-header ${shouldShowExpand ? 'expandable' : ''} ${exercise.collapsed ? 'collapsed' : ''}" 
+                     ${shouldShowExpand ? `onclick="toggleExerciseSets(${exercise.id}, '${day}')"` : ''}>
                     <div class="exercise-image" onclick="event.stopPropagation(); openImageModal(${exercise.id}, '${day}')">
                         ${imageContent}
                         <div class="exercise-image-icon">
@@ -1436,12 +1443,17 @@
             const exercise = workouts[day].find(ex => ex.id === exerciseId);
             if (!exercise) return;
 
-            // Only allow toggle if all sets are completed
+            // Allow expanding if collapsed due to legacy state, but only collapse when completed
             const isCompleted = exercise.completedSets.length === exercise.sets;
-            if (!isCompleted) return;
+            if (!isCompleted && !exercise.collapsed) return;
 
             // Toggle collapsed state
             exercise.collapsed = !exercise.collapsed;
+
+            // Prevent non-completed exercises from staying collapsed
+            if (!isCompleted && exercise.collapsed) {
+                exercise.collapsed = false;
+            }
             saveWorkouts();
             loadWorkouts();
         }
