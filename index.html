@@ -133,6 +133,44 @@
             flex-shrink: 0;
         }
 
+        .data-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .data-action-btn {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            padding: 10px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            height: fit-content;
+        }
+
+        .data-action-btn:hover {
+            background: var(--bg-input);
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .data-action-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--accent-color);
+        }
+
+        .data-action-btn input[type="file"] {
+            display: none;
+        }
+
         .header {
             text-align: center;
             margin-bottom: 30px;
@@ -827,6 +865,20 @@
             .theme-toggle span {
                 display: none;
             }
+
+            .data-action-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+
+            .data-action-btn span {
+                display: none;
+            }
+
+            .day-selector {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
             
             .day-btn {
                 padding: 10px 15px;
@@ -899,6 +951,25 @@
                         <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
                     </svg>
                     <div class="color-preview" id="colorPreview"></div>
+                </label>
+            </div>
+            <div class="data-actions">
+                <button class="data-action-btn" onclick="exportData()" title="Exportar datos">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    <span>Exportar</span>
+                </button>
+                <label class="data-action-btn" for="importFile" title="Importar datos">
+                    <input type="file" id="importFile" accept=".json" onchange="importData(event)" style="display: none;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                    <span>Importar</span>
                 </label>
             </div>
         </div>
@@ -1946,6 +2017,76 @@
         // Save workouts to localStorage
         function saveWorkouts() {
             localStorage.setItem('gymWorkouts', JSON.stringify(workouts));
+        }
+
+        // Export all data to a JSON file
+        function exportData() {
+            const dataToExport = {
+                workouts: workouts,
+                theme: getTheme(),
+                customColor: getCustomColor(),
+                exportDate: new Date().toISOString()
+            };
+
+            const dataStr = JSON.stringify(dataToExport, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `gym-routine-backup-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        // Import data from a JSON file
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    // Validate the imported data structure
+                    if (!importedData.workouts) {
+                        alert('El archivo no contiene datos válidos de rutina.');
+                        return;
+                    }
+
+                    // Confirm before importing (this will overwrite current data)
+                    if (confirm('¿Estás seguro de que quieres importar estos datos? Esto reemplazará todos tus datos actuales.')) {
+                        // Restore workouts
+                        workouts = importedData.workouts;
+                        saveWorkouts();
+
+                        // Restore theme if present
+                        if (importedData.theme) {
+                            setTheme(importedData.theme);
+                        }
+
+                        // Restore custom color if present
+                        if (importedData.customColor) {
+                            setCustomColor(importedData.customColor);
+                            document.getElementById('colorPicker').value = importedData.customColor;
+                        }
+
+                        // Reload the UI
+                        loadWorkouts();
+                        
+                        alert('Datos importados correctamente.');
+                    }
+                } catch (error) {
+                    alert('Error al importar el archivo. Por favor, verifica que sea un archivo JSON válido.');
+                    console.error('Import error:', error);
+                }
+                
+                // Reset the file input so the same file can be imported again if needed
+                event.target.value = '';
+            };
+            reader.readAsText(file);
         }
 
         // Initialize the app when page loads
